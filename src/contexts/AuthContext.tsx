@@ -27,7 +27,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signIn({ email, encryptedPassword }: SignInData) {
     const { token, user } = await signInRequest({ email, encryptedPassword })
     // setCookie(undefined, "next-auth-token", token, { maxAge: 60 * 60 * 1 }) // 1 hour
-    return { token, user }
+    // return { token, user }
   }
 
   return (
