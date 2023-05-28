@@ -1,0 +1,33 @@
+{
+  "name": "mysql-test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "npx prettier --write ."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.1.0",
+    "@types/cookie": "^0.5.1",
+    "@types/crypto-js": "^4.1.1",
+    "@types/node": "20.2.5",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "crypto-js": "^4.1.1",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.4",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.3.3",
+    "next": "13.4.4",
+    "nookies": "^2.5.2",
+    "npm": "^9.6.7",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.44.1",
+    "typescript": "5.0.4",
+    "zod": "^3.21.4"
+  }
+}
