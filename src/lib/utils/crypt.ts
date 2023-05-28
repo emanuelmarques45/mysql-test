@@ -5,9 +5,7 @@ function encryptString(string: string) {
 }
 
 function decryptString(string: string) {
-  return JSON.parse(
-    AES.decrypt(string, process.env.SECRET_KEY).toString(enc.Utf8)
-  )
+  return AES.decrypt(string, process.env.SECRET_KEY).toString(enc.Utf8)
 }
 
 function encryptObject(object: object) {

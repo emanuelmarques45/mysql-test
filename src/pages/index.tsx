@@ -32,8 +32,6 @@ export default function Home({
   async function handleSubmitForm({ email, password }: ValidationSchema) {
     const encryptedPassword = c.encryptString(password)
     const res = await auth.signIn({ email, encryptedPassword })
-    console.log(encryptedPassword)
-    return res
   }
 
   return (
@@ -56,11 +54,17 @@ export default function Home({
         }}
         onSubmit={handleSubmit(handleSubmitForm)}
       >
-        <input type="email" placeholder="Email" {...register("email")} />
+        <input
+          type="email"
+          placeholder="Email"
+          {...register("email")}
+          value={"zeruela@gmail.com"}
+        />
         <input
           type="password"
           placeholder="Password"
           {...register("password")}
+          value={"123456"}
         />
         <button>Log in</button>
       </form>

@@ -12,7 +12,10 @@ export async function signInRequest(data: SignInData) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: data.email, password: data.password }),
+    body: JSON.stringify({
+      email: data.email,
+      password: data.encryptedPassword,
+    }),
   }).then((data) => data.json())
 
   return {
