@@ -1,14 +1,7 @@
 import mysql, { RowDataPacket } from "mysql2/promise"
 
 export async function query(query: string, values: any[] = []) {
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    connectTimeout: 10000,
-  })
+  const connection = await mysql.createConnection(process.env.DATABASE_URL)
 
   try {
     const [rows, fields] = (await connection.query(
