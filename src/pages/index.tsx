@@ -76,8 +76,8 @@ export default function Home({
 }
 
 export async function getServerSideProps() {
-  const data = await fetch("http://localhost:3000/api/users").then((data) =>
-    data.json()
+  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`).then(
+    (data) => data.json()
   )
 
   return { props: { data } }
