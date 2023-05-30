@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next"
 
 import { query } from "../../../lib/services/db"
@@ -9,12 +8,12 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "GET":
-      const querySql = "SELECT * FROM person where id = ?"
-      const [rows, fields] = await query(querySql, [req.query.id])
+      const querySql = "SELECT * FROM user where id = ?"
+      const [rows] = await query(querySql, [req.query.id])
 
       const thereIsUser = rows.length
 
-      if (thereIsUser) return res.status(200).json(rows)
+      if (thereIsUser) return res.status(200).json(rows[0])
 
       return res.status(200).json({ message: "No users found" })
 

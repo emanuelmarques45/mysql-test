@@ -1,16 +1,18 @@
 import { useAuth } from "@/contexts/AuthContext"
-import { InferGetServerSidePropsType } from "next"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import Head from "next/head"
 
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
 import c from "@/lib/utils/crypt"
+import { parseCookies } from "nookies"
+import { useState } from "react"
 
 const validationSchema = z.object({
-  email: z.string().min(1, { message: "Email is required" }).email({
-    message: "Must be a valid email",
-  }),
+  email_username: z
+    .string()
+    .min(1, { message: "Field email/username is required" }),
   password: z
     .string()
     .min(6, { message: "Password must be atleast 6 characters" }),
@@ -22,6 +24,7 @@ export default function Home({
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const auth = useAuth()
+  const [serverError, setServerError] = useState<string>()
 
   const {
     register,
@@ -29,9 +32,16 @@ export default function Home({
     formState: { errors },
   } = useForm<ValidationSchema>({ resolver: zodResolver(validationSchema) })
 
-  async function handleSubmitForm({ email, password }: ValidationSchema) {
+  async function handleSubmitForm({
+    email_username,
+    password,
+  }: ValidationSchema) {
     const encryptedPassword = c.encryptString(password)
-    const res = await auth.signIn({ email, encryptedPassword })
+    try {
+      await auth.signIn({ email: email_username, password: encryptedPassword })
+    } catch (error: any) {
+      setServerError(error.message as string)
+    }
   }
 
   return (
@@ -42,32 +52,33 @@ export default function Home({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <form
-        action="#"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "1rem",
-          height: "90svh",
-        }}
-        onSubmit={handleSubmit(handleSubmitForm)}
-      >
-        <input
-          type="email"
-          placeholder="Email"
-          {...register("email")}
-          value={"zeruela@gmail.com"}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          {...register("password")}
-          value={"123456"}
-        />
+      <form action="#" onSubmit={handleSubmit(handleSubmitForm)}>
+        <fieldset
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "1rem",
+            height: "70svh",
+          }}
+        >
+          <legend>Log in</legend>
+          <input
+            type="text"
+            placeholder="Insira seu email ou nome de usuário"
+            {...register("email_username")}
+            autoFocus
+          />
+          <input
+            type="password"
+            placeholder="Insira sua senha"
+            {...register("password")}
+          />
+        </fieldset>
         <button>Log in</button>
       </form>
+      {serverError}
       {errors.password && (
         <p style={{ color: "black" }}> {errors.password.message} </p>
       )}
@@ -75,10 +86,6 @@ export default function Home({
   )
 }
 
-export async function getServerSideProps() {
-  const data = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`).then(
-    (data) => data.json()
-  )
-
-  return { props: { data } }
+export const getServerSideProps: GetServerSideProps = async () => {
+  return { props: {} }
 }

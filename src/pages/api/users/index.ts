@@ -18,8 +18,8 @@ export default async function handler(
   }
   if (req.method === "POST") {
     const { email, password } = req.body
-    const querySql = "SELECT password FROM user WHERE email = ?"
-    const [rows] = await query(querySql, [email])
+    const querySql = "SELECT password FROM user WHERE email = ? OR username = ?"
+    const [rows] = await query(querySql, [email, email])
 
     if (rows.length) {
       const { password: dbPassword } = rows[0]
@@ -28,10 +28,10 @@ export default async function handler(
 
       if (decryptedDbPassword === decryptedPassword) {
         const querySql =
-          "SELECT id, name, username, email, avatar FROM user WHERE email = ?"
-        const [rows] = await query(querySql, [email])
+          "SELECT id, name, username, email, avatar FROM user WHERE email = ? OR username = ?"
+        const [rows] = await query(querySql, [email, email])
         const user = rows[0]
-        const token = c.encryptObject(user)
+        const token = c.encryptObject(user.id)
 
         return res.status(200).json({ token, user })
       }

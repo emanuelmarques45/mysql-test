@@ -8,5 +8,5 @@ type User = {
 
 type SignInData = {
   email: string
-  encryptedPassword: string
+  password: string
 }
