@@ -41,11 +41,11 @@ function AuthProvider({ children }: AuthProviderProps) {
       })
 
       if (token) {
+        api.defaults.headers["Authorization"] = `Bearer ${token}`
         setCookie(undefined, "nextauth.token", token, {
           maxAge: 60 * 60 * 1,
           sameSite: "lax",
         }) // 1 hour
-        api.defaults.headers["Authorization"] = `Bearer ${token}`
         Router.push("/dashboard")
       }
     } catch (error: any) {
