@@ -18,6 +18,7 @@ export function getApiClient(
   // })
 
   if (token) api.defaults.headers.common["Authorization"] = `Bearer ${token}`
+  axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*"
 
   return api
 }
