@@ -32,5 +32,6 @@
     "styled-components": "^5.3.11",
     "typescript": "5.0.4",
     "zod": "^3.21.4"
-  }
+  },
+  "proxy": "https://mysql-test-two.vercel.app/"
 }
