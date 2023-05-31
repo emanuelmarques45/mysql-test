@@ -34,22 +34,18 @@ function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   async function signIn({ email, password }: SignInData) {
-    try {
-      const { token, user } = await signInRequest({
-        email,
-        password,
-      })
+    const { token, user } = await signInRequest({
+      email,
+      password,
+    })
 
-      if (token) {
-        api.defaults.headers["Authorization"] = `Bearer ${token}`
-        setCookie(undefined, "nextauth.token", token, {
-          maxAge: 60 * 60 * 1,
-          sameSite: "lax",
-        }) // 1 hour
-        Router.push("/dashboard")
-      }
-    } catch (error: any) {
-      throw new Error(error.message)
+    if (token) {
+      api.defaults.headers["Authorization"] = `Bearer ${token}`
+      setCookie(undefined, "nextauth.token", token, {
+        maxAge: 60 * 60 * 1,
+        sameSite: "lax",
+      }) // 1 hour
+      Router.push("/dashboard")
     }
   }
 
