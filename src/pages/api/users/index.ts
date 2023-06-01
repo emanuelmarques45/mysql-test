@@ -21,7 +21,7 @@ export default async function handler(
     const querySql = "SELECT password FROM user WHERE email = ? OR username = ?"
     const [rows] = await query(querySql, [email, email])
 
-    if (rows.length) {
+    if (rows?.length) {
       const { password: dbPassword } = rows[0]
       const decryptedDbPassword = c.decryptString(dbPassword)
       const decryptedPassword = c.decryptString(password)
@@ -36,10 +36,10 @@ export default async function handler(
         return res.status(200).json({ token, user })
       }
 
-      res.status(200).json({ message: "Incorrect password" })
+      res.status(401).json({ message: "Incorrect password" })
     }
 
-    res.status(200).json({ message: "User not found" })
+    res.status(404).json({ message: "User not found" })
   }
 
   return res.status(405).json({ message: "Method not allowed" })
